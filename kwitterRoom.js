@@ -11,34 +11,35 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-  userName = localStorage.getItem(""); /* Armazenar o valor do localStorage "userName" dentro da variável */
+  userName = localStorage.getItem("userName"); 
 
 document.getElementById("userName").innerHTML = "Bem-vindo(a) " + userName + "!";
 
-function () /* Adicione a função addRoom */
+function addRoom() 
 {
-  roomName = document.getElementById("").value; /* Armazenar o nome da sala "roomName" dentro da variável */
+  roomName = document.getElementById("roomName").value; 
 
-  firebase.database().ref("/").child().update /* Adicionar o nome da sala no firebase. */
+  firebase.database().ref("/").child(roomName).update 
   ({ 
-    purpose : " " /* Adicione o valor "adicionar nome de sala" para a chave purpose. */
+    purpose : "adicionar nome de sala" 
   });
 
-    localStorage.setItem("", roomName); /* Adicionar o nome da sala no localStorage. */
+    localStorage.setItem("roomName", roomName);
     
-    window.location = ""; /* redirecionar para a tela kwitterPage.html */
+    window.location = "kwitterPage.html"; 
 }
 
-function getData() {  firebase.database().ref("/").on('value', function(snapshot) /* Explicação: as linhas 25, 26, 27 e 28 obtém todos os dados do firebase para conter os nomes das salas.*/
+function getData() 
+  {  firebase.database().ref("/").on('value', function(snapshot) /* Explicação: as linhas 25, 26, 27 e 28 obtém todos os dados do firebase para conter os nomes das salas.*/
        { document.getElementById("output").innerHTML = ""; snapshot.forEach(function(childSnapshot) 
           { childKey  = childSnapshot.key;
-                = childKey; /* Adicionar a variável roomNames que contém todos os nomes das salas vindas do firebase. */
+               roomName = childKey; 
 
        console.log("Nome da Sala - " + roomNames);
       row = "<div class='roomName' id="+roomNames+" onclick='redirectToRoomName(this.id)' >#"+ roomNames +"</div><hr>"; /* Explicação: O row(fileira) é uma variável que define a área de texto dentro da coluna do console, pois para cada navegador pode ser diferente, então o row padroniza. */
       /* Importante: O redirectToRoomName é uma função para que quando o nome da sala for pressionado, entraremos naquela sala.*/
 
-      document.getElementById("").innerHTML += row; /* Chamar o id output */
+      document.getElementById("output").innerHTML += row; 
       /* Importante: Se apenas escrevermos "=" apenas o nome da sala será exibido. No entanto, quando temos muitos nomes
         de salas, e queremos exibir todos dentro de um único elemento HTML, utilizamos "+="" e em seguida escrevemos a variável row para enfileirar. */
     });
@@ -48,16 +49,16 @@ function getData() {  firebase.database().ref("/").on('value', function(snapshot
 
 getData();
 
-function (name) /* Adicionar a função redirectToRoomName  */
+function redirectToRoomName(name) 
 {
   console.log(name); 
-  localStorage.setItem("", name); /* Adicione o roomName (nome da sala) ao localStorage. */
-    window.location = ""; /* redirecionar para a tela kwitterPage.html */
+  localStorage.setItem("roomName", name); 
+    window.location = "kwitterPage.html";
 }
 
-function () /* Adicione a função logout para saírmos da sala. */
+function logout()
 {
-localStorage.removeItem(""); /* Adicione o userName para ser removido */
-localStorage.removeItem(""); /* Adicione o roomName para ser removido */
-    window.location = ""; /* redirecionar para a tela index.html */
+localStorage.removeItem("userName");
+localStorage.removeItem("roomName"); 
+    window.location = "index.html"; 
 }
